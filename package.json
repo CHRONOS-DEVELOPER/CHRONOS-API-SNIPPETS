@@ -1,19 +1,36 @@
 {
-  "dependencies": {
-    "axios": "^0.27.2",
-    "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "socket.io": "^4.5.1",
-    "socket.io-client": "^4.5.1"
-  },
-  "name": "app",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+    "dependencies": {
+        "axios": "^0.27.2",
+        "cors": "^2.8.5",
+        "express": "^4.18.1",
+        "socket.io": "^4.5.1",
+        "socket.io-client": "^4.5.1"
+    },
+    "name": "chronos-api-snippets",
+    "version": "0.0.1",
+    "main": "index.js",
+    "keywords": [
+        "Server",
+        "Client",
+        "API",
+        "Express",
+        "Axios",
+        "Socket.io",
+        "Socket.io-client"
+    ],
+    "author": "José Sávio Marques de Oliveira",
+    "license": "ISC",
+    "description": "Compactar as principais ferramentas para desenvolvimento e consumo de backend",
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/CHRONOS-DEVELOPER/CHRONOS-API-SNIPPETS.git"
+    },
+    "bugs": {
+        "url": "https://github.com/CHRONOS-DEVELOPER/CHRONOS-API-SNIPPETS/issues"
+    },
+    "homepage": "https://github.com/CHRONOS-DEVELOPER/CHRONOS-API-SNIPPETS#readme"
 }
