@@ -14,6 +14,17 @@ const cors = require('cors');
 const { default: axios } = require('axios');
 /* Importing the websocket function from the socket.io-client module. */
 const { io: websocket } = require("socket.io-client");
+/* Importing the file system module. */
+const fs = require('fs');
+const { table } = require('console');
+
+var DB = {};
+
+const config = {
+    DB_PATH: "./DataBase",
+    DB_BACKUP_PATH: "./Backup"
+}
+
 
 /* The WebSocket class is a wrapper for the socket.io library */
 class WebSocket {
@@ -42,11 +53,13 @@ class WebSocket {
 /* A object that contains the functions that are used to create a server. */
 const Server = {
     /* Creating a server. */
-    Init: (port, uses) => {
+    Init: (port, functions, uses) => {
         app.use(cors(uses))
         app.use(express.json())
         server.listen(port, () => {
             console.log('[Server] => Running on port : ' + port);
+            functions ? functions() : ""
+
         })
     },
     /* Use a static directory for "/" page. */
@@ -173,8 +186,107 @@ const Client = {
 }
 
 
+const JsonServer = {
+    /* A function that is setting the path of the DataBase. */
+    path: (path) => {
+        config.DB_PATH = path
+
+    },
+
+    /* A function that is setting the path of the Backup. */
+    BackupPath: (path) => {
+        config.DB_BACKUP_PATH = path
+
+    },
+
+    /* Creating a DataBase and saving it in a file. */
+    InitDatabase: async(TimeInterval) => {
+        await fs.readFile(config.DB_PATH + '/DataBase.json', 'utf8', (err, data) => {
+            /* Creating a folder called DataBase. */
+            if (err) {
+                fs.mkdir(config.DB_PATH, {}, (err) => {
+                    if (err) {
+                        console.error(err);
+                    } else /* Creating a file called DataBase.json in the DataBase folder. */ {
+                        console.log("[DataBase] => Created successfully");
+                        fs.writeFile(config.DB_PATH + '/DataBase.json', JSON.stringify(DB), (err) => {
+                            if (err) console.error(err);
+                        })
+                    }
+                })
+
+            } else /* Loading the DataBase. */ {
+                console.log("[DataBase] => Loaded successfully")
+                DB = JSON.parse(data)
+            }
+            /* Update DataBase every Time-Interval seconds. */
+            if (TimeInterval) {
+                setInterval(() => {
+                    fs.writeFile(config.DB_PATH + '/DataBase.json', JSON.stringify(DB), (err) => {
+                        if (err) console.error(err);
+
+                    })
+                }, TimeInterval * 1000)
+            }
+
+        })
+    },
+
+    /* Creating a backup of the DataBase. */
+    InitBackup: (TimeInterval) => {
+        /* Reading the file Backup.json in the Backup folder. */
+        fs.readFile(config.DB_BACKUP_PATH + '/Backup.json', 'utf8', (err, data) => {
+            /* Reading the file Backup.json in the Backup folder. */
+            if (err) {
+                /* Creating a folder called Backup. */
+                fs.mkdir(config.DB_BACKUP_PATH, {}, (err) => {
+
+                    /* Checking if there is an error and if there is, it will print the error. */
+                    if (err) {
+                        console.error(err);
+                    } else /* Creating a backup of the DataBase. */ {
+                        console.log("Backup Initialization Successfully")
+                        data = [DB]
+                            /* Writing the data in the file Backup.json in the Backup folder. */
+                        fs.writeFile(config.DB_BACKUP_PATH + '/Backup.json', JSON.stringify(data), (err) => {
+                            if (err) console.error(err);
+                        })
+                    }
+                })
+
+            } else /* Loading the backup. */ {
+                console.log("Backup Loaded Successfully")
+                data = JSON.parse(data)
+
+            }
+            /* Creating a backup of the DataBase every TimeInterval seconds. */
+            if (TimeInterval) {
+                setInterval(() => {
+                    console.log("New Backup Point Created")
+                    data.push(DB)
+                    fs.writeFile(config.DB_BACKUP_PATH + '/Backup.json', JSON.stringify(data), (err) => {
+                        if (err) console.error(err);
+                    })
+                }, TimeInterval * 1000)
+            }
+        })
+
+    },
+
+    action: (functions) => {
+
+        functions(DB)
+
+
+    }
+
+
+}
+
+
 
 module.exports = {
     Server,
-    Client
+    Client,
+    JsonServer
 }
