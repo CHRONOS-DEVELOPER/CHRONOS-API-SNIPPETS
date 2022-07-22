@@ -8,7 +8,7 @@
         "socket.io-client": "^4.5.1"
     },
     "name": "chronos-api-snippets",
-    "version": "0.1.1",
+    "version": "0.1.3",
     "main": "index.js",
     "keywords": [
         "Server",
