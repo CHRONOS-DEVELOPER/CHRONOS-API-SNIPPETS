@@ -25,7 +25,6 @@ const config = {
     DB_BACKUP_PATH: "./Backup"
 }
 
-
 /* The WebSocket class is a wrapper for the socket.io library */
 class WebSocket {
     constructor() {
