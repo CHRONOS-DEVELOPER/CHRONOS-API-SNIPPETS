@@ -59,7 +59,7 @@ const { Server } = require("chronos-api-snippets")
 		
 	})
 
-	Api.Get("/users",(req,res)=>{
+	Api.Delete("/users",(req,res)=>{
 		res.send(req.body)
 	})
 
