@@ -161,12 +161,12 @@ class ClientSocket {
         this.socket = websocket(Route)
 
     }
-    emit(id, mensage) {
-        this.socket.emit(id, mensage)
+    emit(id, message) {
+        this.socket.emit(id, message)
     }
     on(id, functions) {
-        this.socket.on(id, (mensage) => {
-            functions(mensage)
+        this.socket.on(id, (message) => {
+            functions(message)
         })
     }
 
